@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light, Dark Theme Toggle</title>
+
+    <script src="https://kit.fontawesome.com/4ecdeacbfa.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            --background: white;
+            --text: black;
+        }
+
+        body {
+            padding: 8px;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            height: 40px;
+            padding: 5px;
+        }
+        
+        main {
+            padding-top: 2em;
+        }
+
+        input#toggle-dark-mode {
+            display: none;
+        }
+
+        label.checkbox-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            width: 42px;
+            height: 16px;
+            padding: 5px;
+            border-radius: 50px;
+            background-color: #444;
+        }
+
+        label.checkbox-label .ball {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: white;
+            transition: transform 0.2s linear;
+        }
+
+        .fa-moon {color: #f1c40f;}
+        .fa-sun {color: #f39c12;}
+
+        #toggle-dark-mode:checked + label.checkbox-label .ball {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="https://portaldesenvolvedor.com.br" target="_blank">Portal desenvolvedor</a>
+        </div>
+
+        <nav>
+            <div>
+                <input type="checkbox" name="theme" id="toggle-dark-mode">
+                <label class="checkbox-label" for="toggle-dark-mode">
+                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-sun"></i>
+                    <span class="ball"></span>
+                </label>
+            </div>  
+        </nav>
+    </header>
+    
+    <main>
+        <p>Aprenda desenvolvimento web de forma descomplicada.</p>
+    </main>
+
+    <script>
+        var html = document.getElementsByTagName('html')[0];
+
+        const themes = {
+            light: {
+                background: 'white',
+                text: 'black'    
+            },
+            dark: {
+                background: 'black',
+                text: 'white'
+            }
+        };
+
+        function setTheme(newTheme) {
+            const themeColors = themes[newTheme];
+
+            Object.keys(themeColors).map(function(key){
+                html.style.setProperty(`--${key}`, themeColors[key]);                    
+            });
+
+            localStorage.setItem('theme', newTheme);
+        }
+
+        const darkModeToggle = document.querySelector('input[name=theme]');
+        darkModeToggle.addEventListener('change', function({ target }) {
+            setTheme(target.checked ? 'dark' : 'light');
+        });
+
+        const theme = localStorage.getItem('theme');
+        if(theme) {
+            setTheme(theme);
+            if(theme == 'dark') {
+                darkModeToggle.checked = true;
+            }
+        }
+    </script>
+</body>
+</html>
